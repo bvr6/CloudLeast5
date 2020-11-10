@@ -1,6 +1,6 @@
 import org.apache.hadoop.conf.Configuration; 
 import org.apache.hadoop.fs.Path; 
-import org.apache.hadoop.io.LongWritable; 
+import org.apache.hadoop.io.IntWritable; 
 import org.apache.hadoop.io.Text; 
 import org.apache.hadoop.mapreduce.Job; 
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat; 
@@ -30,10 +30,10 @@ public class Driver {
         job.setReducerClass(CloudLeast5Reducer.class); 
   
         job.setMapOutputKeyClass(Text.class); 
-        job.setMapOutputValueClass(LongWritable.class); 
+        job.setMapOutputValueClass(IntWritable.class); 
   
-        job.setOutputKeyClass(LongWritable.class); 
-        job.setOutputValueClass(Text.class); 
+        job.setOutputKeyClass(Text.class); 
+        job.setOutputValueClass(IntWritable.class); 
   
         FileInputFormat.addInputPath(job, new Path(otherArgs[0])); 
         FileOutputFormat.setOutputPath(job, new Path(otherArgs[1])); 
