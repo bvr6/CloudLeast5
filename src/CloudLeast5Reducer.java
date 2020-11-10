@@ -26,7 +26,7 @@ public class CloudLeast5Reducer extends Reducer<Text,IntWritable,Text,IntWritabl
       result.set(sum);
       tmap.put(-sum, key.toString());
       if (tmap.size() > 5) { 
-    	  tmap.remove(tmap.firstKey()); 
+    	  tmap.remove(tmap.lastKey()); 
       }
     }
     
@@ -40,7 +40,7 @@ public class CloudLeast5Reducer extends Reducer<Text,IntWritable,Text,IntWritabl
   
             int count = entry.getKey(); 
             String name = entry.getValue(); 
-            context.write(new Text(name), new IntWritable(count)); 
+            context.write(new Text(name), new IntWritable(-count)); 
         } 
     }
 }
