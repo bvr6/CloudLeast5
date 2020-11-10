@@ -1,12 +1,12 @@
 import java.io.*; 
 import org.apache.hadoop.io.Text; 
-import org.apache.hadoop.io.LongWritable; 
+import org.apache.hadoop.io.IntWritable; 
 import org.apache.hadoop.mapreduce.Reducer;
 import java.util.Map;
 import java.util.TreeMap; 
   
-public class CloudLeast5Reducer extends Reducer<Text,LongWritable,Text,LongWritable> {
-    private LongWritable result = new LongWritable();
+public class CloudLeast5Reducer extends Reducer<Text,IntWritable,Text,IntWritable> {
+    private IntWritable result = new IntWritable();
     static int count;
     private TreeMap<Integer, String> tmap;
     @Override
@@ -16,11 +16,11 @@ public class CloudLeast5Reducer extends Reducer<Text,LongWritable,Text,LongWrita
         tmap = new TreeMap<Integer, String>(); 
     }
     
-    public void reduce(Text key, Iterable<LongWritable> values,
+    public void reduce(Text key, Iterable<IntWritable> values,
                        Context context
                        ) throws IOException, InterruptedException {
       int sum = 0;
-      for (LongWritable val : values) {
+      for (IntWritable val : values) {
         sum += val.get();
       }
       result.set(sum);
@@ -38,9 +38,9 @@ public class CloudLeast5Reducer extends Reducer<Text,LongWritable,Text,LongWrita
         for (Map.Entry<Integer, String> entry : tmap.entrySet())  
         { 
   
-            long count = entry.getKey(); 
+            int count = entry.getKey(); 
             String name = entry.getValue(); 
-            context.write(new Text(name), new LongWritable(-count)); 
+            context.write(new Text(name), new IntWritable(count)); 
         } 
     }
 }

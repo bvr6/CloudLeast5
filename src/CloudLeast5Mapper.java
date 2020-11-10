@@ -1,12 +1,12 @@
 import java.io.*;
 import java.util.StringTokenizer;
 import org.apache.hadoop.io.Text; 
-import org.apache.hadoop.io.LongWritable; 
+import org.apache.hadoop.io.IntWritable; 
 import org.apache.hadoop.mapreduce.Mapper;  
 
 public class CloudLeast5Mapper extends Mapper<Object, 
-                              Text, Text, LongWritable> {
-	private final static LongWritable one = new LongWritable(1);
+                              Text, Text, IntWritable> {
+	private final static IntWritable one = new IntWritable(1);
     private Text word = new Text();
 	
     @Override
