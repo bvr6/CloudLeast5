@@ -1,63 +1,46 @@
-import java.io.IOException; 
-import java.util.Map; 
+import java.io.*; 
+import org.apache.hadoop.io.Text; 
+import org.apache.hadoop.io.IntWritable; 
+import org.apache.hadoop.mapreduce.Reducer;
+import java.util.Map;
 import java.util.TreeMap; 
   
-import org.apache.hadoop.io.LongWritable; 
-import org.apache.hadoop.io.Text; 
-import org.apache.hadoop.mapreduce.Reducer; 
-  
-public class CloudLeast5Reducer extends Reducer<Text, 
-                     LongWritable, LongWritable, Text> { 
-  
-    private TreeMap<Long, String> tmap2; 
-  
+public class CloudLeast5Reducer extends Reducer<Text,IntWritable,Text,IntWritable> {
+    private IntWritable result = new IntWritable();
+    static int count;
+    private TreeMap<Integer, String> tmap;
     @Override
     public void setup(Context context) throws IOException, 
                                      InterruptedException 
     { 
-        tmap2 = new TreeMap<Long, String>(); 
-    } 
-  
-    @Override
-    public void reduce(Text key, Iterable<LongWritable> values, 
-      Context context) throws IOException, InterruptedException 
-    { 
-  
-        // input data from mapper 
-        // key                values 
-        // movie_name         [ count ] 
-        String name = key.toString(); 
-        long count = 0; 
-  
-        for (LongWritable val : values) 
-        { 
-            count = val.get(); 
-        } 
-  
-        // insert data into treeMap, 
-        // we want top 10 viewed movies 
-        // so we pass count as key 
-        tmap2.put(count, name); 
-  
-        // we remove the first key-value 
-        // if it's size increases 10 
-        if (tmap2.size() > 10) 
-        { 
-            tmap2.remove(tmap2.firstKey()); 
-        } 
-    } 
-  
+        tmap = new TreeMap<Integer, String>(); 
+    }
+    
+    public void reduce(Text key, Iterable<IntWritable> values,
+                       Context context
+                       ) throws IOException, InterruptedException {
+      int sum = 0;
+      for (IntWritable val : values) {
+        sum += val.get();
+      }
+      result.set(sum);
+      tmap.put(-sum, key.toString());
+      if (tmap.size() > 5) { 
+    	  tmap.remove(tmap.lastKey()); 
+      }
+    }
+    
     @Override
     public void cleanup(Context context) throws IOException, 
                                        InterruptedException 
     { 
   
-        for (Map.Entry<Long, String> entry : tmap2.entrySet())  
+        for (Map.Entry<Integer, String> entry : tmap.entrySet())  
         { 
   
-            long count = entry.getKey(); 
+            int count = entry.getKey(); 
             String name = entry.getValue(); 
-            context.write(new LongWritable(count), new Text(name)); 
+            context.write(new Text(name), new IntWritable(-count)); 
         } 
-    } 
-} 
+    }
+}
