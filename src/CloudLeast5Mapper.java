@@ -6,7 +6,7 @@ import org.apache.hadoop.mapreduce.Mapper;
 
 public class CloudLeast5Mapper extends Mapper<Object, 
                               Text, Text, LongWritable> {
-	private final static LongWritable one = new LongWritable(1);
+	private final static LongWritable one = new LongWritable(-1);
     private Text word = new Text();
 	
     @Override

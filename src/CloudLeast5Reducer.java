@@ -19,7 +19,7 @@ public class CloudLeast5Reducer extends Reducer<Text,LongWritable,Text,LongWrita
                        ) throws IOException, InterruptedException {
       int sum = 0;
       for (LongWritable val : values) {
-        sum += val.get();
+        sum -= val.get();
       }
       result.set(sum);
       if (count < 5) 
