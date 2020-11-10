@@ -22,7 +22,7 @@ public class CloudLeast5Reducer extends Reducer<Text,LongWritable,Text,LongWrita
         sum += val.get();
       }
       result.set(sum);
-      if (count < 10) 
+      if (count < 5) 
         { 
             context.write(key, result); 
             count++; 
