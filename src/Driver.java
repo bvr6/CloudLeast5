@@ -23,7 +23,7 @@ public class Driver {
             System.exit(2); 
         } 
   
-        Job job = Job.getInstance(conf, "top 10"); 
+        Job job = Job.getInstance(conf, "bottom 5"); 
         job.setJarByClass(Driver.class); 
   
         job.setMapperClass(CloudLeast5Mapper.class); 
