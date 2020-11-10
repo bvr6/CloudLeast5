@@ -40,7 +40,7 @@ public class CloudLeast5Reducer extends Reducer<Text,LongWritable,Text,LongWrita
   
             long count = entry.getKey(); 
             String name = entry.getValue(); 
-            context.write(new Text(name), new LongWritable(count)); 
+            context.write(new Text(name), new LongWritable(-count)); 
         } 
     }
 }
